@@ -22,6 +22,12 @@ getData();
 function displayCards(games) {
     container.innerHTML = "";
     for (let game of games){
+
+        /*let pageTitle = document.createElement('h1')
+        pageTitle.setAttribute('class', 'text-center')
+        pageTitle.innerText = 'Games That I Like';*/
+
+
         let column = document.createElement('div')
         column.setAttribute('class', 'col-md-4 mb-4')
 
@@ -29,14 +35,16 @@ function displayCards(games) {
         card.setAttribute('class', 'card');
 
         let title = document.createElement('h2')
+        title.setAttribute('class', 'text-center')
         title.innerText = game.title;
 
         let image = document.createElement('img')
         image.src = game.boxArt;
         image.setAttribute('class', 'card-img-top');
 
-        let rating = document.createElement('span')
-        rating.innerText = game.rating / 10;
+        let rating = document.createElement('h5')
+        rating.setAttribute('class', 'text-center')
+        rating.innerText = `My Rating: ${game.rating / 10}` //game.rating / 10;
         //let finished = document.createElement('span')
         let deleteButton = document.createElement('button')
 
@@ -55,6 +63,8 @@ function displayCards(games) {
         card.append(title, image, rating, deleteButton);
         //document.body.append(card);
         container.appendChild(column)
+        document.getElementById('body')
+        //body.setAttribute('class', )
     }
 }
 
@@ -78,3 +88,46 @@ async function deleteGame(id) {
         console.error('Error:', error);
     }
 }*/
+
+//async function to pull the data from the form on the page and add it to the API using the POST method and displaying it on the page as a card, followed by clearing the form
+async function addGame() {
+    //let createForm = document.createElement('div')
+    //let addGameButton = document.getElementById('addGameButton')
+    
+    //let data = await res.json();
+    //getData()
+    let addGameForm = document.getElementById('addGameForm')
+    const addedGame = new FormData(addGameForm)
+    //console.log(formData.values);
+    /*for(const value of formData.values()){
+        console.log(value);
+    }*/
+    // let gameTitle = document.getElementById('gameTitle')
+    // let gameArt = document.getElementById('gameArt')
+
+    let res = await fetch(`${url}/games`, {
+        method: 'POST', 
+        body:JSON.stringify(Object.fromEntries(addedGame)), 
+        headers:{
+        'content-type':'application/json'
+        }
+    });
+    const content = await res.json();
+    console.log(content);
+    getData();
+    clearForm();
+       console.log(addedGame.get('gameTitle'));
+};
+
+document.getElementById('addGameButton').addEventListener('click', (e) => {
+    e.preventDefault();
+    console.log('pudding');
+    addGame()
+});
+
+
+const clearForm = () => {
+    document.getElementById('gameRating').value = '';
+    document.getElementById('gameTitle').value = '';
+    document.getElementById('gameArt').value = '';
+};

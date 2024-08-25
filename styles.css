@@ -1,11 +1,16 @@
-.boxArt {
+/* .boxArt {
     height: 150px;
     width: 150px;
     border: solid red 2px;
 
-}
+} */
 
 .card {
     border: solid blue;
 
+}
+
+#pageTitle {
+    border: solid blue 3px;
+    border-radius: 10px;
 }
